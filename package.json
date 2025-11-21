@@ -1,0 +1,47 @@
+{
+  "name": "peopletag-api",
+  "version": "1.0.0",
+  "description": "RESTful API server for the PeopleTag protocol",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "server": "node server/index.js",
+    "dev": "node server/index.js",
+    "functions:install": "cd functions && npm install",
+    "functions:serve": "firebase emulators:start --only functions",
+    "functions:deploy": "firebase deploy --only functions"
+  },
+  "keywords": [
+    "peopletag",
+    "api",
+    "rest-api",
+    "firebase-functions",
+    "ethereum",
+    "ipfs",
+    "web3"
+  ],
+  "author": "PeopleTag",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lxssl/peopletag-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lxssl/peopletag-api/issues"
+  },
+  "homepage": "https://github.com/lxssl/peopletag-api#readme",
+  "dependencies": {
+    "@noble/ciphers": "^2.0.1",
+    "@noble/hashes": "^2.0.1",
+    "@peopletag/protocol": "git+https://github.com/lxssl/peopletag-protocol",
+    "cors": "^2.8.5",
+    "ethers": "^6.15.0",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "firebase-admin": "^12.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
+
