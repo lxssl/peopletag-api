@@ -99,10 +99,17 @@ GET /api/v1/profiles/:userAddress
 ### Firebase Cloud Functions
 
 ```bash
+# Install Firebase CLI if needed
+npm install -g firebase-tools
+
+# Login to Firebase
+firebase login
+
+# Deploy functions
 firebase deploy --only functions
 ```
 
-See [FIREBASE_DEPLOYMENT.md](FIREBASE_DEPLOYMENT.md) for detailed instructions.
+The API will be available at `https://your-project-id.cloudfunctions.net/api/api/v1/profiles/...`
 
 ### Other Platforms
 
@@ -116,7 +123,6 @@ The standalone Express server (`server/` directory) can be deployed to:
 ## Documentation
 
 - [API Documentation](server/README.md) - Complete API reference
-- [Firebase Deployment Guide](FIREBASE_DEPLOYMENT.md) - Deploy to Firebase
 - [Quick Start Guide](server/QUICKSTART.md) - Setup instructions
 - [SDK Example](server/examples/sdk-example.js) - Client library example
 
