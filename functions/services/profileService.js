@@ -18,12 +18,18 @@ const searchProfilesByTags = async (tags, limit, city = null) => {
     const allProfiles = await firebaseService.getAllProfiles();
 
     // Filter profiles that match the tags
+    // Use partial matching (like frontend) to match tags with or without #
     const matchingProfiles = allProfiles.filter(profile => {
       // Check if profile has any of the requested tags
-      const profileTags = profile.tagsList || [];
-      const hasMatchingTag = tags.some(tag => 
-        profileTags.some(pt => pt.toLowerCase() === tag.toLowerCase())
-      );
+      const profileTags = (profile.tagsList || []).map(t => t.toLowerCase());
+      const hasMatchingTag = tags.some(tag => {
+        const searchTerm = tag.toLowerCase();
+        const tagTerm = searchTerm.startsWith('#') ? searchTerm : `#${searchTerm}`;
+        // Use partial matching (includes) like the frontend does
+        return profileTags.some(pt => 
+          pt.includes(tagTerm) || pt.includes(searchTerm)
+        );
+      });
 
       // Check city filter if provided
       const cityMatches = !city || 
@@ -34,15 +40,19 @@ const searchProfilesByTags = async (tags, limit, city = null) => {
 
     // Sort by relevance (number of matching tags) and then by last updated
     matchingProfiles.sort((a, b) => {
-      const aTags = a.tagsList || [];
-      const bTags = b.tagsList || [];
+      const aTags = (a.tagsList || []).map(t => t.toLowerCase());
+      const bTags = (b.tagsList || []).map(t => t.toLowerCase());
       
-      const aMatches = tags.filter(tag => 
-        aTags.some(pt => pt.toLowerCase() === tag.toLowerCase())
-      ).length;
-      const bMatches = tags.filter(tag => 
-        bTags.some(pt => pt.toLowerCase() === tag.toLowerCase())
-      ).length;
+      const aMatches = tags.filter(tag => {
+        const searchTerm = tag.toLowerCase();
+        const tagTerm = searchTerm.startsWith('#') ? searchTerm : `#${searchTerm}`;
+        return aTags.some(pt => pt.includes(tagTerm) || pt.includes(searchTerm));
+      }).length;
+      const bMatches = tags.filter(tag => {
+        const searchTerm = tag.toLowerCase();
+        const tagTerm = searchTerm.startsWith('#') ? searchTerm : `#${searchTerm}`;
+        return bTags.some(pt => pt.includes(tagTerm) || pt.includes(searchTerm));
+      }).length;
 
       if (bMatches !== aMatches) {
         return bMatches - aMatches; // More matches first
